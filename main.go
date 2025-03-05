@@ -17,6 +17,8 @@ func main() {
 	r.POST("/addusers", handlers.AddUserHandler(s))
 	r.GET("/categories", handlers.GetCategoriesHandler)
 	r.GET("/products", handlers.GetProductsHandler)
+	r.GET("/categories/:id", handlers.GetCategoryByID)
+	r.GET("/categories/:id/products", handlers.GetProductsByCategoryID)
 
 	//запуск сервера
 	r.Run()
