@@ -1,6 +1,10 @@
 package server
 
-import "sync"
+import (
+	"os"
+	"path/filepath"
+	"sync"
+)
 
 type User struct {
 	ID   int    `json:"id"`
@@ -13,8 +17,9 @@ type Category struct {
 }
 
 type Server struct {
-	users []User
-	mutex sync.Mutex
+	users    []User
+	imageDir string
+	mutex    sync.Mutex
 }
 
 type Product struct {
@@ -38,8 +43,15 @@ var Products = []Product{
 	{ID: 4, Name: "Чизкейк", Description: "Классический десерт", Price: 4.00, CategoryID: 3},
 }
 
-func NewServer() *Server {
-	return &Server{users: []User{}}
+func NewServer(imageDir string) (*Server, error) {
+	if err := os.MkdirAll(imageDir, os.ModePerm); err != nil {
+		return nil, err
+	}
+
+	return &Server{
+		users:    []User{},
+		imageDir: imageDir,
+	}, nil
 }
 
 func (s *Server) GetUsers() []User {
@@ -54,4 +66,11 @@ func (s *Server) AddUser(user User) User {
 	user.ID = len(s.users) + 1
 	s.users = append(s.users, user)
 	return user
+}
+func (s *Server) GetImagePath(filename string) (string, error) {
+	filePath := filepath.Join(s.imageDir, filename)
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return "", err
+	}
+	return filePath, nil
 }

@@ -10,7 +10,10 @@ import (
 func main() {
 	//gin
 	r := gin.Default()
-	s := server.NewServer()
+	s, err := server.NewServer("./images")
+	if err != nil {
+		panic("Server initialization error: " + err.Error())
+	}
 
 	//роуты
 	r.GET("/getusers", handlers.GetUsersHandler(s))
@@ -19,6 +22,7 @@ func main() {
 	r.GET("/products", handlers.GetProductsHandler)
 	r.GET("/categories/:id", handlers.GetCategoryByID)
 	r.GET("/categories/:id/products", handlers.GetProductsByCategoryID)
+	r.GET("/images/:filename", handlers.GetImageHandler(s))
 
 	//запуск сервера
 	r.Run()
