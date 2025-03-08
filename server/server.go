@@ -12,8 +12,9 @@ type User struct {
 }
 
 type Category struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Image string `json:"image,omitempty"`
 }
 
 type Server struct {
@@ -28,6 +29,7 @@ type Product struct {
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
 	CategoryID  int     `json:"category_id"`
+	Image       string  `json:"image,omitempty"`
 }
 
 var Categories = []Category{
@@ -73,4 +75,21 @@ func (s *Server) GetImagePath(filename string) (string, error) {
 		return "", err
 	}
 	return filePath, nil
+}
+func (s *Server) CategoryExists(id int) bool {
+	for _, cat := range Categories {
+		if cat.ID == id {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *Server) ProductExists(id int) bool {
+	for _, prod := range Products {
+		if prod.ID == id {
+			return true
+		}
+	}
+	return false
 }
