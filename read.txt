@@ -1,1 +1,74 @@
-все запросы и обоснование проекта
+**Инструкция по запросам:
+
+1. GET /getusers
+Описание: Получение списка всех пользователей
+Ответы:
+  200 OK
+  [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}] - если есть пользователи 
+  //
+  Если пользователей нет: []
+  //
+  500 Internal Server Error (при ошибках доступа к данным)
+
+2. POST /addusers
+Описание: Добавление нового пользователя
+Тело запроса (JSON):
+  {"name": "Charlie"}
+Ответы: 
+  201 OK
+  {"id": 1, "name": "Charlie"}
+  //
+  400 Bad Request (если данные невалидны, например, пустое имя)
+  {"error": "Invalid request"}
+
+3. GET /categories
+Описание: Список всех категорий
+Ответ:
+  200 OK
+  [{"id": 1, "name": "Кофе"}, {"id": 2, "name": "Чай"}, {"id": 3, "name": "Десерты"}]
+  //
+  Если категорий нет: []
+
+4. GET /products
+Описание: Список всех продуктов
+Ответ: 
+  200 OK
+  [
+  {"id": 1, "name": "Эспрессо", "price": 2.50, "category_id": 1},
+  {"id": 2, "name": "Латте", "price": 3.50, "category_id": 1}
+  ]
+  //
+  Если категорий нет: []
+
+5. GET /categories/:id
+Описание: Получение категории по ID
+Ответы:
+  200 OK (для существующей категории)
+  {"id": 1, "name": "Кофе"}
+  //
+  404 Not Found (если категория не найдена):
+  {"error": "Category not found"}
+  //
+  400 (Bad Request)
+  {"error": "Invalid category ID"}
+
+6. GET /categories/:id/products
+Описание: Продукты определенной категории
+Ответы:
+  200 OK (для существующей категории):
+  [{"id": 1, "name": "Эспрессо", "price": 2.50}]
+  //
+  404 Not Found:
+  {"error": "No products found for this category"}
+  //  
+  400 (Bad Request):
+  {"error": "Invalid category ID"}
+
+7. GET /images/:filename
+Описание: Получение изображения по имени файла
+Ответы:
+  200 OK : Бинарные данные изображения (например, image/jpeg).
+  //
+  404 Not Found :
+  {"error": "Image not found"}
+**
