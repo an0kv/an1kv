@@ -18,7 +18,7 @@ type Category struct {
 
 type Server struct {
 	users    []User
-	imageDir string
+	ImageDir string
 	mutex    sync.Mutex
 }
 
@@ -50,7 +50,7 @@ func NewServer(imageDir string) (*Server, error) {
 
 	return &Server{
 		users:    []User{},
-		imageDir: imageDir,
+		ImageDir: imageDir,
 	}, nil
 }
 
@@ -68,7 +68,7 @@ func (s *Server) AddUser(user User) User {
 	return user
 }
 func (s *Server) GetImagePath(filename string) (string, error) {
-	filePath := filepath.Join(s.imageDir, filename)
+	filePath := filepath.Join(s.ImageDir, filename)
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return "", err
 	}
